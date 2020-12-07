@@ -17,6 +17,21 @@ app.use(cookieParser());
 app.use('/', indexRoute);
 app.use('/translate', translateRoute);
 
+///Error handling
+app.use((req,res) => {
+    res.status(404);
+    if (req.accepts('html')) {
+        res.send('404');
+        return;
+    }
+
+    if (req.accepts('json')) {
+        res.send({error: 'niet gevonden'});
+        return;
+    }
+    res.type('txt').send('Not found');
+});
+
 app.listen(3000, () => {
     console.log("running on port 3000");
 });
